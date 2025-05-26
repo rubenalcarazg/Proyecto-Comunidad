@@ -96,7 +96,19 @@ button:hover {
     gap: 25px;
     justify-items: center;
 }
+/* Cuando la pantalla sea menor o igual a 1000px → 3 filas (2 columnas) */
+@media (max-width: 1000px) {
+    .contenedor-eventos {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
 
+/* Cuando la pantalla sea menor o igual a 650px → 6 filas (1 columna) */
+@media (max-width: 650px) {
+    .contenedor-eventos {
+        grid-template-columns: 1fr;
+    }
+}
 .evento {
     width: 100%;
     max-width: 400px;
