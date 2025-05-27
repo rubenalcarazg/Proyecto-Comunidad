@@ -1,0 +1,48 @@
+body{
+    font-family: sans-serif;
+    margin: 0px;
+}
+
+header{
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    padding: 10px;
+}
+
+.logo{
+    display: flex;
+}
+
+.logo img{
+    height: 150px;
+}
+
+a{
+    text-decoration: none;
+}
+
+a.nav-link{
+    color: #243d51;
+    margin-right: 40px;
+}
+a.nav-link:hover{
+    color: #786247;
+}
+
+nav{
+    padding-left: 10px;
+    
+}
+
+.idioma{
+    background-color: white;
+    color:#243d51 ;
+    padding: 7px 20px;
+}
+
+.login{
+    background-color:#243d51;
+    color: white;
+    padding: 7px;
+}

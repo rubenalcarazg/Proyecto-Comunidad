@@ -125,6 +125,62 @@ header {
     background-color: #ddd;
 }
 
+/* --- Estilos para el desplegable de VOTACIONES (solo para admin) --- */
+
+/* Contenedor del elemento de navegación que tendrá un desplegable */
+.nav-item-votaciones {
+    position: relative; /* CRÍTICO: Posiciona el menú desplegable en relación a este elemento */
+    /* Hereda margin de .nav-container a.nav-link si es necesario */
+    margin: 0 40px; /* Asegura el mismo margen que otros nav-link */
+    display: flex; /* Para que el enlace y el desplegable se alineen si es necesario */
+    align-items: center;
+    height: 100%; /* Para que el área de hover sea uniforme con otros enlaces */
+}
+
+/* El menú desplegable en sí */
+.votaciones-dropdown-content {
+    display: none; /* Por defecto, oculto */
+    position: absolute; /* Posicionamiento absoluto respecto a .nav-item-votaciones */
+    top: 100%; /* Coloca el menú justo debajo del enlace padre */
+    left: 50%; /* Centra el dropdown horizontalmente bajo el enlace */
+    transform: translateX(-50%); /* Ajusta el centrado */
+    background-color: #f9f9f9; /* Color de fondo del desplegable */
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Sombra para darle profundidad */
+    min-width: 220px; /* Ancho mínimo del menú */
+    z-index: 1002; /* Asegura que el menú esté por encima de otros contenidos */
+    border-radius: 5px; /* Bordes ligeramente redondeados */
+    overflow: hidden; /* Para que los bordes redondeados se apliquen a los elementos internos */
+    padding: 5px 0; /* Pequeño padding interno */
+}
+
+/* Elementos individuales dentro del menú desplegable */
+.votaciones-dropdown-content a {
+    color: #243d51; /* Color de los enlaces del desplegable */
+    padding: 10px 20px; /* Espaciado interno de los enlaces */
+    text-decoration: none;
+    display: block; /* Para que todo el área del elemento sea clicable */
+    white-space: nowrap; /* Evita que el texto se rompa en varias líneas */
+    transition: background-color 0.2s ease, color 0.2s ease;
+    font-weight: normal; /* Asegura que no sea negrita si nav-link lo es */
+    text-align: center; /* Centra el texto en el dropdown */
+}
+
+.votaciones-dropdown-content a:hover {
+    background-color: #ddd; /* Efecto de hover en los elementos del desplegable */
+    color: #786247; /* Color de texto al pasar el ratón */
+}
+
+/* REGLA CRÍTICA: Mostrar el menú desplegable cuando se pasa el ratón por el contenedor */
+.nav-item-votaciones:hover .votaciones-dropdown-content {
+    display: block;
+}
+
+/* Ajuste para los enlaces nav-link dentro de .nav-item-votaciones */
+.nav-item-votaciones .nav-link {
+    /* Si necesitas ajustar algo específico del enlace principal dentro de este contenedor */
+    /* Por ejemplo, para que no tenga padding horizontal extra si .nav-item-votaciones ya lo da */
+    margin: 0; /* Elimina el margin de a.nav-link que se sobrepone con el del padre */
+}
 
     
 .hamburger,

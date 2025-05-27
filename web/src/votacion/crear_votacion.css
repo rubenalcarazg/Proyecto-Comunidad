@@ -1,0 +1,117 @@
+/* web/src/votacion/crear_votacion.css */
+#crear-votacion-content {
+    background-color: #fff;
+    padding: 25px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 0px;
+    width: 90%;
+    max-width: 800px;
+    margin: 40px auto;
+    padding-top: 180px;
+    text-align: center; /* Centra el título principal */
+    display: block; /* Asegura que el contenedor sea un bloque */
+}
+
+#crear-votacion-content h2 {
+    color: #243D51;
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-size: 22px;
+    text-align: center; /* Aseguramos que el h2 esté centrado */
+}
+
+#formulario-crear-votacion {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: flex-start; /* Alinea los elementos del formulario a la izquierda */
+    width: 80%;
+    margin: 20px auto 0; /* Centra el formulario horizontalmente, con margen superior para separarlo del h2 */
+    text-align: left; /* Alinea el texto dentro de los elementos del formulario a la izquierda */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos del grupo a la izquierda */
+    width: 100%;
+}
+
+.form-group label {
+    color: #333;
+    margin-bottom: 5px;
+    font-weight: bold;
+    text-align: left;
+}
+
+.form-group input[type="text"],
+.form-group input[type="datetime-local"],
+.form-group textarea {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 0px;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1em;
+    text-align: left;
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+#opciones-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+}
+
+.opcion-input {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 100%;
+    justify-content: flex-start;
+}
+
+.opcion-input input[type="text"] {
+    flex-grow: 1;
+    text-align: left;
+}
+
+.opcion-input button.eliminar-opcion {
+    background-color: #d9534f;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    border-radius: 0px;
+    font-size: 0.9em;
+}
+
+.opcion-input button.eliminar-opcion:hover {
+    background-color: #c9302c;
+}
+
+#añadir-opcion,
+.boton-crear-votacion {
+    background-color: #243D51;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    cursor: pointer;
+    border-radius: 0px;
+    font-size: 0.9em;
+    margin-top: 10px;
+    width: fit-content;
+    margin-left: 0;
+    margin-right: auto;
+}
+
+#añadir-opcion:hover,
+.boton-crear-votacion:hover {
+    background-color: #1a2e3e;
+}

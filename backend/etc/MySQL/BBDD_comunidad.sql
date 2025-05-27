@@ -38,21 +38,32 @@ CREATE TABLE IF NOT EXISTS eventos (
 );
 
 CREATE TABLE IF NOT EXISTS votacion (
+    titulo VARCHAR(255) NOT NULL,
     id_votacion INT AUTO_INCREMENT PRIMARY KEY,
-    descripcion VARCHAR(255) NOT NULL,
-    fecha_inicio DATETIME,
-    fecha_fin DATETIME,
+    descripcion TEXT,
+    fecha_inicio DATETIME NOT NULL,
+    fecha_fin DATETIME NOT NULL,
     id_usuario INT NOT NULL,
     CONSTRAINT fk_votacion_usuarios FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
+);
+
+CREATE TABLE IF NOT EXISTS opciones_votacion (
+    id_opcion INT AUTO_INCREMENT PRIMARY KEY,
+    votacion_id INT NOT NULL,
+    texto_opcion VARCHAR(255) NOT NULL,
+    FOREIGN KEY (votacion_id) REFERENCES votacion(id_votacion) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS voto (
     id_voto INT AUTO_INCREMENT PRIMARY KEY,
     id_usuario INT NOT NULL,
     id_votacion INT NOT NULL,
-    opciones ENUM('Sí', 'No', 'En blanco') NOT NULL DEFAULT 'En blanco',
+    id_opcion_votada INT NOT NULL,
+    fecha_voto DATETIME DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT fk_voto_usuarios FOREIGN KEY(id_usuario) REFERENCES usuarios(id_usuario),
-    CONSTRAINT fk_voto_votacion FOREIGN KEY(id_votacion) REFERENCES votacion(id_votacion)
+    CONSTRAINT fk_voto_votacion FOREIGN KEY(id_votacion) REFERENCES votacion(id_votacion),
+    CONSTRAINT fk_voto_opcion FOREIGN KEY(id_opcion_votada) REFERENCES opciones_votacion(id_opcion),
+    UNIQUE KEY (id_usuario, id_votacion)
 );
 
 CREATE TABLE IF NOT EXISTS baneo (
@@ -127,6 +138,7 @@ CREATE TABLE IF NOT EXISTS dislikes_hilo (
     FOREIGN KEY (id_hilo) REFERENCES hilo(id_hilo),
     FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario)
 );
+
 ALTER TABLE usuarios
 ADD COLUMN baneado BOOLEAN DEFAULT FALSE;
 
@@ -146,9 +158,9 @@ INSERT INTO foro (id_foro, nombre) VALUES (1, 'General');
 
 INSERT INTO usuarios (id_usuario, nombre, correo, usuario, contrasenya, id_roles) 
 VALUES
-(1, 'Admin Ejemplo', 'admin@comunidad.com', 'admin1', '$2y$10$w3C.OpqLs.I5ESk1b9CjdeiHB8dMe.ERlg875kR1.nSuNhBY4RUs.', 1),  -- Administrador
-(2, 'Presidente Ejemplo', 'presidente@comunidad.com', 'presi1', '$2y$10$w3C.OpqLs.I5ESk1b9CjdeiHB8dMe.ERlg875kR1.nSuNhBY4RUs.', 2),  -- Presidente
-(3, 'Vecino Ejemplo', 'vecino@comunidad.com', 'vecino1', '$2y$10$w3C.OpqLs.I5ESk1b9CjdeiHB8dMe.ERlg875kR1.nSuNhBY4RUs.', 3);  -- Vecino
+(1, 'Admin Ejemplo', 'admin@comunidad.com', 'admin1', '$2y$10$w3C.OpqLs.I5ESk1b9CjdeiHB8dMe.ERlg875kR1.nSuNhBY4RUs.', 1),
+(2, 'Presidente Ejemplo', 'presidente@comunidad.com', 'presi1', '$2y$10$w3C.OpqLs.I5ESk1b9CjdeiHB8dMe.ERlg875kR1.nSuNhBY4RUs.', 2),
+(3, 'Vecino Ejemplo', 'vecino@comunidad.com', 'vecino1', '$2y$10$w3C.OpqLs.I5ESk1b9CjdeiHB8dMe.ERlg875kR1.nSuNhBY4RUs.', 3);
 
 CREATE TABLE likes_respuestas (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -180,7 +192,6 @@ INSERT INTO aforo_zona (zona, aforo_maximo) VALUES
 ('Gimnasio', 10),
 ('Sala de reuniones', 1),
 ('Barbacoa', 2);
-
 
 ALTER TABLE eventos
 ADD COLUMN valor_destacado TINYINT DEFAULT 5,

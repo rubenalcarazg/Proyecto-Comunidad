@@ -1,0 +1,86 @@
+/* Estilos Generales */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #786247; /* Fondo azul clarito */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  /* Contenedor principal cuadrado */
+  .votacion-container {
+    background-color: #ffffff; /* Fondo blanco */
+    border-radius: 20px;
+    padding: 30px;
+    width: 350px;
+    height: 350px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    text-align: center;
+    color: #333; 
+  }
+  
+  h1 {
+    font-size: 22px;
+    margin-bottom: 20px;
+    color: #243d51; 
+  }
+  
+  .votacion-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+  }
+  
+  .opcion {
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    color: #243d51; 
+  }
+  
+  input[type="radio"] {
+    margin-right: 10px;
+    transform: scale(1.3);
+    accent-color: #786247; 
+  }
+  
+  button {
+    background-color: #243d51; 
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-top: 20px;
+    width: 100%;
+  }
+  
+  button:hover {
+    background-color: #243d51; 
+    transform: scale(1.05);
+  }
+  
+ 
+  button:focus {
+    outline: none;
+  }
+  
+  input[type="radio"]:checked + label {
+    color: #357ab7; 
+  }
+  

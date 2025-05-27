@@ -1,6 +1,16 @@
 <?php
-    session_start();
-    $basePath = '/Proyecto-Comunidad/';
+
+// Asegúrate de que la sesión se haya iniciado en los archivos principales que incluyen esta cabecera.
+// Si no es el caso, descomenta la siguiente línea.
+session_start(); // Es crucial que la sesión esté iniciada para acceder a $_SESSION
+
+$basePath = '/Proyecto-Comunidad/';
+
+// Lógica para verificar si el usuario es administrador
+$es_administrador = false;
+if (isset($_SESSION['nombre_rol']) && $_SESSION['nombre_rol'] === 'Admin') {
+    $es_administrador = true;
+}
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +20,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comunidad de Vecinos</title>
 
-    <!-- Estilos -->
     <link rel="stylesheet" href="<?= $basePath ?>web/src/header/cabecera.css">
 </head>
 <body>
@@ -25,10 +34,19 @@
                 <a href="<?= $basePath ?>web/src/eventos/index.php" class="nav-link" target="_top">EVENTOS</a>
                 <a href="<?= $basePath ?>web/src/noticias/index.php" class="nav-link" target="_top">NOTICIAS</a>
                 <a href="<?= $basePath ?>web/src/foro/index.php" class="nav-link" target="_top">FORO</a>
-                <a href="#" class="nav-link">VOTACIONES</a>
+                
+                <div class="nav-item-votaciones">
+                    <a href="<?= $basePath ?>web/src/votacion/ver_votacion.php" class="nav-link">VOTACIONES</a>
+                    <?php if ($es_administrador): ?>
+                        <div class="votaciones-dropdown-content">
+                            <a href="<?= $basePath ?>web/src/votacion/ver_votacion.php">Ver Votaciones Activas</a>
+                            <a href="<?= $basePath ?>web/src/votacion/crear_votacion.php">Crear Nueva Votación</a>
+                        </div>
+                    <?php endif; ?>
+                </div>
+
                 <a href="<?= $basePath ?>web/src/reservas/reservas.php" class="nav-link" target="_top">RESERVAS</a>
                 <a href="<?= $basePath ?>web/src/contacto/index.php" class="nav-link" target="_top">SOPORTE</a>
-                
             </nav>
             
             <div class="buttons-container">
@@ -92,7 +110,6 @@
         </div>
     </header>
 
-    <!-- JavaScript -->
     <script src="<?= $basePath ?>web/src/header/cabecera.js"></script>
 </body>
 </html>

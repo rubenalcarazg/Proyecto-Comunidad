@@ -23,13 +23,7 @@ if (isset($_GET['id'])) {
         $imagen = htmlspecialchars($imagen, ENT_QUOTES, 'UTF-8');
 
         echo "
-            <div class='contenedor-volver'>
-                <form method='GET' action='../../../web/src/noticias/index.php'>
-                    <input type='hidden' name='id' value='$id_noticia'>
-                    <button type='submit' class='boton-noticia-volver'>Volver a Noticias</button>
-                </form>
-            </div>
-
+            
             <div class='noticia-header'>
                 <div class='noticia-imagen'>
                     <img src='" . $imagen . "' alt='Imagen de la noticia'>
