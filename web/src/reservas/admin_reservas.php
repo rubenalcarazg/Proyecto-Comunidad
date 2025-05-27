@@ -11,64 +11,66 @@ if (!$rolPermitido) {
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Reservas Activas de la Comunidad</title>
-    <link rel="stylesheet" href="admin_reservas.css"> 
-   
+    <link rel="stylesheet" href="admin_reservas.css">
+
 </head>
+
 <body class="fondo-cuerpo">
-    
+
 
     <main class="contenedor-principal">
-    <div class="titulo-con-boton">
-        <h2 class="titulo-eventos">Reservas Activas de la Comunidad</h2>
-        <a href="reservas.php" class="boton-evento boton-volver">Volver a Reservas</a>
-    </div>
-    <div id="contenedor-reservas">Cargando reservas...</div>
-</main>
+        <div class="titulo-con-boton">
+            <h2 class="titulo-eventos">Reservas Activas de la Comunidad</h2>
+            <a href="reservas.php" class="boton-evento boton-volver">Volver a Reservas</a>
+        </div>
+        <div id="contenedor-reservas">Cargando reservas...</div>
+    </main>
 
-
-    <footer>
-        <iframe src="../footer/FOOTER.html" frameborder="0" width="100%" height="300px"></iframe>
-    </footer>
 
     <script>
-    document.addEventListener("DOMContentLoaded", () => {
-        fetch("/Proyecto-Comunidad/backend/src/reservas/admin_reservas_logic.php")
-            .then(res => res.json())
-            .then(data => {
-                const contenedor = document.getElementById("contenedor-reservas");
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch("/Proyecto-Comunidad/backend/src/reservas/admin_reservas_logic.php")
+                .then(res => res.json())
+                .then(data => {
+                    const contenedor = document.getElementById("contenedor-reservas");
 
-                if (data.error) {
-                    contenedor.innerHTML = `<p style="color:red;">${data.error}</p>`;
-                    return;
-                }
-
-                if (data.length === 0) {
-                    contenedor.innerHTML = "<p>No hay reservas activas.</p>";
-                    return;
-                }
-
-                // Agrupar reservas por zona
-                const zonasAgrupadas = {};
-
-                data.forEach(reserva => {
-                    const zona = reserva.zona;
-
-                    if (!zonasAgrupadas[zona]) {
-                        zonasAgrupadas[zona] = [];
+                    if (data.error) {
+                        contenedor.innerHTML = `<p style="color:red;">${data.error}</p>`;
+                        return;
                     }
 
-                    zonasAgrupadas[zona].push(reserva);
-                });
+                    if (data.length === 0) {
+                        contenedor.innerHTML = `
+                            <div class="sin-reservas-wrapper">
+                                 <p class="sin-reservas">No hay reservas activas.</p>
+                            </div>
+                        `;
+                        return;
+                    }
 
-                // Generar HTML
-                let htmlFinal = '';
+                    // Agrupar reservas por zona
+                    const zonasAgrupadas = {};
 
-                for (const [zona, reservas] of Object.entries(zonasAgrupadas)) {
-                    htmlFinal += `<h3 style="margin-top: 30px; text-align: center;">Zona: ${zona}</h3>`;
-                    htmlFinal += `<table>
+                    data.forEach(reserva => {
+                        const zona = reserva.zona;
+
+                        if (!zonasAgrupadas[zona]) {
+                            zonasAgrupadas[zona] = [];
+                        }
+
+                        zonasAgrupadas[zona].push(reserva);
+                    });
+
+                    // Generar HTML
+                    let htmlFinal = '';
+
+                    for (const [zona, reservas] of Object.entries(zonasAgrupadas)) {
+                        htmlFinal += `<h3 style="margin-top: 30px; text-align: center;">Zona: ${zona}</h3>`;
+                        htmlFinal += `<table>
                         <thead>
                             <tr>
                                 <th>Usuario</th>
@@ -77,24 +79,25 @@ if (!$rolPermitido) {
                         </thead>
                         <tbody>`;
 
-                    reservas.forEach(reserva => {
-                        htmlFinal += `<tr>
+                        reservas.forEach(reserva => {
+                            htmlFinal += `<tr>
                             <td>${reserva.nombre_usuario}</td>
                             <td>${new Date(reserva.fecha_reserva).toLocaleString()}</td>
                         </tr>`;
-                    });
+                        });
 
-                    htmlFinal += `</tbody></table>`;
-                }
+                        htmlFinal += `</tbody></table>`;
+                    }
 
-                contenedor.innerHTML = htmlFinal;
-            })
-            .catch(err => {
-                console.error("❌ Error al hacer fetch:", err);
-                document.getElementById("contenedor-reservas").innerHTML = `<p style="color:red;">Error al cargar las reservas.</p>`;
-            });
-    });
-</script>
+                    contenedor.innerHTML = htmlFinal;
+                })
+                .catch(err => {
+                    console.error("❌ Error al hacer fetch:", err);
+                    document.getElementById("contenedor-reservas").innerHTML = `<p style="color:red;">Error al cargar las reservas.</p>`;
+                });
+        });
+    </script>
 
 </body>
+
 </html>

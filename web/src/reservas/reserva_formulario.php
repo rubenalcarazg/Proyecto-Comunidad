@@ -14,7 +14,7 @@ $zona = isset($_GET['zona']) ? htmlspecialchars($_GET['zona']) : 'Zona desconoci
 <head>
     <meta charset="UTF-8">
     <title>Reservar <?php echo $zona; ?></title>
-    <link rel="stylesheet" href="reservas.css">
+    <link rel="stylesheet" href="reservas_formulario.css">
 
     <!-- Flatpickr calendario -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
