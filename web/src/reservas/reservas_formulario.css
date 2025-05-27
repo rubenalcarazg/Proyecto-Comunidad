@@ -7,33 +7,36 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f9f9f9;
-    padding: 0;
     margin: 0;
+    padding: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-main {
-    padding-top: 180px;
+main.formulario-reserva {
+    padding-top: 0;
 }
-
 
 .fondo-cuerpo {
     background-color: #f9f9f9;
 }
 
-
 .formulario-reserva {
-    max-width: 500px;
+    max-width: 600px;
     width: 100%;
     background-color: #fff;
-    padding: 30px;
-    margin: 50px auto;
-    border-radius: 0px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    margin: 0 auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
 }
 
 h2 {
     text-align: center;
     color: #243D51;
+    margin-top: 30px;
     margin-bottom: 20px;
 }
 
@@ -44,17 +47,23 @@ form {
 }
 
 label {
-    font-size: 14px;
+    font-size: 20px;
     color: #333;
 }
 
 input[type="date"],
 select,
 .boton-reserva {
-    padding: 10px;
+    padding: 12px;
     border: 1px solid #ddd;
-    border-radius: 0px;
     width: 100%;
+}
+
+#fecha {
+    padding: 12px;
+    border: 1px solid #ddd;
+    width: 100%;
+    font-size: 16px;
 }
 
 button {
@@ -67,7 +76,6 @@ button {
 button:hover {
     background-color: #1c2f3d;
 }
-
 
 .contenedor-principal {
     max-width: 1200px;
@@ -96,19 +104,7 @@ button:hover {
     gap: 25px;
     justify-items: center;
 }
-/* Cuando la pantalla sea menor o igual a 1000px → 3 filas (2 columnas) */
-@media (max-width: 1000px) {
-    .contenedor-eventos {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
 
-/* Cuando la pantalla sea menor o igual a 650px → 6 filas (1 columna) */
-@media (max-width: 650px) {
-    .contenedor-eventos {
-        grid-template-columns: 1fr;
-    }
-}
 .evento {
     width: 100%;
     max-width: 400px;
@@ -218,3 +214,4 @@ footer {
 .boton-volver:hover {
     background-color: #837c6e;
 }
+

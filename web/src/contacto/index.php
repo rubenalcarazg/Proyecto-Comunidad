@@ -7,8 +7,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contacto</title>
-    <link rel="stylesheet" href="generico.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="generico.css" />
+    
 </head>
 <header>
     <?php
@@ -20,7 +21,7 @@
     <div class="container">
         <div class="contact-info">
             <h2>Contacta con nosotros</h2>
-            <p>Estaremos encantados de atenderte desde nuestro formulario de contacto o directamente desde nuestros datos de contacto. Te responderemos lo antes posible.</p>
+            <p>Estaremos encantados de atenderte desde nuestro formulario de contacto o directamente desde nuestros datos de contacto. Resolveremos la incidencia lo antes posible.</p>
             
             <h2>Datos de contacto:</h2>
             <p class="correo-contacto">soporteproyectocomunidad@gmail.com</p>

@@ -27,13 +27,15 @@ $evento = $result->fetch();
 
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>Editar Evento</title>
     <link rel="stylesheet" href="crear_evento.css?<?= time(); ?>" />
 </head>
+
 <body class="fondo-cuerpo">
-   
+
 
     <div class="contenedor-principal">
         <h2 class="titulo-evento">Editar Evento</h2>
@@ -50,17 +52,18 @@ $evento = $result->fetch();
             <input type="date" id="fecha" name="fecha" value="<?= $evento['fecha']; ?>" required>
 
             <div class="checkbox-destacado">
-                 <label for="descripcion">¿El evento es destacado?</label> <br>
+                <label for="descripcion">¿El evento es destacado?</label> <br>
                 <label><input type="radio" name="es_destacada" value="1" <?= $evento['es_destacada'] == 1 ? 'checked' : ''; ?>> Sí</label>
                 <label><input type="radio" name="es_destacada" value="0" <?= $evento['es_destacada'] == 0 ? 'checked' : ''; ?>> No</label>
             </div>
 
-            <button type="submit">Guardar Cambios</button>
+            <div class="botones-formulario">
+                <button type="submit" class="boton-evento">Guardar Cambios</button>
+                <a href="/../Proyecto-Comunidad/web/src/eventos/index.php" class="boton-evento boton-secundario">Volver a eventos</a>
+            </div>
+
         </form>
     </div>
-
-    <footer>
-        <iframe src="../footer/FOOTER.html" frameborder="0" width="100%" height="300px"></iframe>
-    </footer>
 </body>
+
 </html>
