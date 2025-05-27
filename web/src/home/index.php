@@ -63,12 +63,14 @@ include __DIR__ . '/../../../backend/src/conexion_BBDD/conexion_db_pm.php';
                         ?>
                             <div class="noticia">
                                 <img src="<?php echo htmlspecialchars($imagen); ?>" alt="Imagen de la noticia">
-                                <h3><?php echo htmlspecialchars($noticia['titulo']); ?></h3>
-                                <p><?php echo htmlspecialchars(mb_strimwidth($noticia['contenido'], 0, 100, "...")); ?></p>
-                                <p><strong>Fecha:</strong> <?php echo $fecha_formateada; ?></p>
-                                <a href="../noticias/detalle.php?id=<?php echo $noticia['id_noticias']; ?>">
-                                    <button>Ver más</button>
-                                </a>
+                                <div>
+                                    <h3><?php echo htmlspecialchars($noticia['titulo']); ?></h3>
+                                    <p><?php echo htmlspecialchars(mb_strimwidth($noticia['contenido'], 0, 100, "...")); ?></p>
+                                    <p><strong>Fecha:</strong> <?php echo $fecha_formateada; ?></p>
+                                    <a href="../noticias/detalle.php?id=<?php echo $noticia['id_noticias']; ?>">
+                                        <button>Ver más</button>
+                                    </a>
+                                </div>
                             </div>
                         <?php
                         }
@@ -101,12 +103,14 @@ include __DIR__ . '/../../../backend/src/conexion_BBDD/conexion_db_pm.php';
                         ?>
                             <div class="evento">
                                 <img src="../../etc/assets/img/bloque.jpg" alt="Imagen del evento">
-                                <h3><?php echo htmlspecialchars($evento['titulo']); ?></h3>
-                                <p><?php echo htmlspecialchars($evento['descripcion']); ?></p>
-                                <p><strong>Fecha:</strong> <?php echo $fecha_formateada; ?></p>
-                                <a href="../eventos/detalle.php?id=<?php echo $evento['id_evento']; ?>">
-                                    <button>Ver Detalles</button>
-                                </a>
+                                <div>
+                                    <h3><?php echo htmlspecialchars($evento['titulo']); ?></h3>
+                                    <p><?php echo htmlspecialchars($evento['descripcion']); ?></p>
+                                    <p><strong>Fecha:</strong> <?php echo $fecha_formateada; ?></p>
+                                    <a href="../eventos/detalle.php?id=<?php echo $evento['id_evento']; ?>">
+                                        <button>Ver Detalles</button>
+                                    </a>
+                                </div>
                             </div>
                         <?php
                         }
