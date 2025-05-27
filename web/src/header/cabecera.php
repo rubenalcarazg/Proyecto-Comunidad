@@ -82,7 +82,19 @@ if (isset($_SESSION['nombre_rol']) && $_SESSION['nombre_rol'] === 'Admin') {
                 <a href="<?= $basePath ?>web/src/eventos/index.php" class="nav-link" target="_top">EVENTOS</a>
                 <a href="<?= $basePath ?>web/src/noticias/index.php" class="nav-link" target="_top">NOTICIAS</a>
                 <a href="<?= $basePath ?>web/src/foro/index.php" class="nav-link" target="_top">FORO</a>
-                <a href="#" class="nav-link">VOTACIONES</a>
+                <?php if ($es_administrador): ?>
+                <!-- Si es admin: mostrar menú desplegable -->
+                <div class="nav-link-dropdown">
+                    <button class="nav-link toggle-submenu">VOTACIONES &#9662;</button>
+                    <div class="submenu">
+                    <a href="<?= $basePath ?>web/src/votacion/ver_votacion.php" class="nav-link">Ver Votaciones Activas</a>
+                    <a href="<?= $basePath ?>web/src/votacion/crear_votacion.php" class="nav-link">Crear Nueva Votación</a>
+                    </div>
+                </div>
+                <?php else: ?>
+                <!-- Si no es admin: solo enlace directo -->
+                <a href="<?= $basePath ?>web/src/votacion/ver_votacion.php" class="nav-link">VOTACIONES</a>
+                <?php endif; ?>
                 <a href="<?= $basePath ?>web/src/reservas/reservas.php" class="nav-link" target="_top">RESERVAS</a>
                 <a href="<?= $basePath ?>web/src/contacto/index.php" class="nav-link" target="_top">SOPORTE</a>
             </nav>

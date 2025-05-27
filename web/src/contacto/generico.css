@@ -290,7 +290,7 @@ section:nth-child(even) {
 
 /* Animación simple para un hover de botones */
 .boton_secundario:hover {
-  transform: scale(1.01);
+  background-color: #1a2e3e;
 }
 .contact-form {
   display: flex;
@@ -316,4 +316,27 @@ label {
 
 textarea {
   width: 100%; /* Asegura que el textarea ocupe todo el ancho */
+}
+
+/* Estilo general: en pantallas grandes, mostrar en fila */
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 30px;
+}
+
+/* En pantallas menores a 768px (md), pasar a columna */
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .contact-info,
+    .contact-form {
+        width: 100%;
+        max-width: 600px; /* para que no se estiren demasiado */
+    }
 }

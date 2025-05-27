@@ -131,7 +131,6 @@ header {
 .nav-item-votaciones {
     position: relative; /* CRÍTICO: Posiciona el menú desplegable en relación a este elemento */
     /* Hereda margin de .nav-container a.nav-link si es necesario */
-    margin: 0 40px; /* Asegura el mismo margen que otros nav-link */
     display: flex; /* Para que el enlace y el desplegable se alineen si es necesario */
     align-items: center;
     height: 100%; /* Para que el área de hover sea uniforme con otros enlaces */
@@ -148,7 +147,6 @@ header {
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Sombra para darle profundidad */
     min-width: 220px; /* Ancho mínimo del menú */
     z-index: 1002; /* Asegura que el menú esté por encima de otros contenidos */
-    border-radius: 5px; /* Bordes ligeramente redondeados */
     overflow: hidden; /* Para que los bordes redondeados se apliquen a los elementos internos */
     padding: 5px 0; /* Pequeño padding interno */
 }
@@ -179,7 +177,7 @@ header {
 .nav-item-votaciones .nav-link {
     /* Si necesitas ajustar algo específico del enlace principal dentro de este contenedor */
     /* Por ejemplo, para que no tenga padding horizontal extra si .nav-item-votaciones ya lo da */
-    margin: 0; /* Elimina el margin de a.nav-link que se sobrepone con el del padre */
+    margin: 40px; /* Elimina el margin de a.nav-link que se sobrepone con el del padre */
 }
 
     
@@ -253,16 +251,47 @@ header {
   transform: translateY(-10px);
   transition: max-height 0.5s ease, opacity 0.4s ease, transform 0.4s ease;
 }
+.nav-link-dropdown {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.toggle-submenu {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  color: #333;
+}
+
+.submenu {
+  display: none;
+  flex-direction: column;
+  background-color: #f5f5f5;
+  width: 100%;
+}
+
+.submenu a.nav-link {
+  padding-left: 2rem;
+  font-weight: normal;
+  border-bottom: 1px solid #ccc;
+}
   }
 
   .mobile-menu .nav-link {
     padding: 1rem;
     border-bottom: 1px solid #ccc;
     text-decoration: none;
-    color: #333;
+    color: #243d51;
     font-weight: bold;
   }
-
+  .mobile-menu .nav-link:hover {
+    color: #786247;
+  }
   .mobile-menu .buttons-container,
   .mobile-menu .user-info-container {
     margin-top: 1rem;
