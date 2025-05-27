@@ -82,3 +82,13 @@ document.addEventListener('DOMContentLoaded', function() {
     });
   });
     
+  document.addEventListener("DOMContentLoaded", function () {
+  const toggleSubmenuBtn = document.querySelector(".toggle-submenu");
+  const submenu = document.querySelector(".submenu");
+
+  if (toggleSubmenuBtn && submenu) {
+    toggleSubmenuBtn.addEventListener("click", function () {
+      submenu.style.display = submenu.style.display === "flex" ? "none" : "flex";
+    });
+  }
+});

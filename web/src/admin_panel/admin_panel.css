@@ -25,7 +25,6 @@ table {
     width: 80%;
     margin-bottom: 20px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
     overflow: hidden; /* Para que el border-radius funcione en la tabla */
 }
 
@@ -67,7 +66,6 @@ input[type="hidden"],
 select {
     padding: 8px;
     border: 1px solid #dcdde1;
-    border-radius: 4px;
     font-size: 16px;
 }
 
@@ -76,28 +74,27 @@ select {
 }
 
 button[type="submit"] {
-    background-color: #f39c12;
+    background-color: #786247;
     color: white;
     padding: 10px 15px;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s ease;
 }
 
 button[type="submit"]:hover {
-    background-color: #e67e22;
+    background-color: #9e825f;
 }
 
 a {
-    color: #3498db;
+    color: #243d51;
     text-decoration: none;
     transition: color 0.3s ease;
 }
 
 a:hover {
-    color: #2980b9;
+    color: #1c2f3d;
 }
 
 .admin-link {
