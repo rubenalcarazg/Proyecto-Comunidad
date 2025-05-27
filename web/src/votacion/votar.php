@@ -3,25 +3,16 @@ session_start(); // Inicia la sesión al principio para acceder a $_SESSION
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
-$basePath = '/Proyecto-Comunidad/'; // Asegúrate de que esto coincida con la URL base de tu proyecto
+$basePath = '/Proyecto-Comunidad/';
 
-
-// Incluye el archivo de conexión a la base de datos.
-// Ajusta la ruta si es necesario. Desde 'web/src/votacion/', sube 3 niveles para llegar a la raíz de 'Proyecto-Comunidad/',
-// y luego baja a 'backend/src/conexion_BBDD/'
 require_once __DIR__ . '/../../../backend/src/conexion_BBDD/conexion_db_pm.php';
-
 
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: " . $basePath . "web/src/login/index.php");
     exit();
 }
-
-// Obtener el ID de la votación de la URL (GET)
-// Es crucial que esta página reciba el ID de la votación para saber qué mostrar.
 $id_votacion = $_GET['votacion_id'] ?? null;
 
-// Si no se proporciona un ID de votación válido, redirigir o mostrar un error
 if ($id_votacion === null || !is_numeric($id_votacion)) {
     header("Location: " . $basePath . "web/src/votacion/ver_votacion.php?error=votacion_invalida");
     exit();
@@ -29,28 +20,34 @@ if ($id_votacion === null || !is_numeric($id_votacion)) {
 
 $id_usuario = $_SESSION['id_usuario'];
 $ya_voto = false;
-$id_opcion_votada_usuario = null; // Variable para almacenar la opción que el usuario votó
+$id_opcion_votada_usuario = null;
 $votacion_activa = false;
-$votacion_info = null; // Para guardar el título y descripción de la votación
-$opciones_votacion = []; // Para guardar las opciones de voto
+$votacion_info = null;
+$opciones_votacion = [];
 
 try {
-    // 1. Verificar si la votación existe y está activa
+    date_default_timezone_set('Europe/Madrid'); // o la que estés usando
     $now = date('Y-m-d H:i:s');
-    $stmt_votacion = $pdo->prepare("SELECT id_votacion, titulo, descripcion, fecha_inicio, fecha_fin FROM votacion WHERE id_votacion = ? AND fecha_inicio <= ? AND fecha_fin >= ?");
-    $stmt_votacion->execute([$id_votacion, $now, $now]);
+    echo "Fecha actual del servidor: $now<br>";
+    $stmt_votacion = $pdo->prepare("SELECT id_votacion, titulo, descripcion, fecha_inicio, fecha_fin FROM votacion WHERE id_votacion = ?");
+    $stmt_votacion->execute([$id_votacion]);
     $votacion_info = $stmt_votacion->fetch(PDO::FETCH_ASSOC);
 
     if ($votacion_info) {
-        $votacion_activa = true;
+        $fecha_inicio = strtotime($votacion_info['fecha_inicio']);
+        $fecha_fin = strtotime($votacion_info['fecha_fin']);
+        $ahora = time();
 
-        // 2. Obtener las opciones de esta votación
+        $votacion_activa = ($ahora >= $fecha_inicio && $ahora <= $fecha_fin);
+        $votacion_futura = ($ahora < $fecha_inicio);
+        $votacion_finalizada = ($ahora > $fecha_fin);
+
+        // Obtener opciones
         $stmt_opciones = $pdo->prepare("SELECT id_opcion, texto_opcion FROM opciones_votacion WHERE votacion_id = ?");
         $stmt_opciones->execute([$id_votacion]);
         $opciones_votacion = $stmt_opciones->fetchAll(PDO::FETCH_ASSOC);
 
-        // 3. Verificar si el usuario ya votó en esta votación específica
-        // Y OBTENER LA OPCIÓN VOTADA si ya lo hizo.
+        // Verificar si el usuario ya ha votado
         $stmt_verificar_voto = $pdo->prepare("SELECT id_opcion_votada FROM voto WHERE id_usuario = ? AND id_votacion = ?");
         $stmt_verificar_voto->execute([$id_usuario, $id_votacion]);
         $resultado_voto = $stmt_verificar_voto->fetch(PDO::FETCH_ASSOC);
@@ -61,7 +58,6 @@ try {
         }
 
     } else {
-        // Votación no encontrada o no activa
         header("Location: " . $basePath . "web/src/votacion/ver_votacion.php?error=votacion_no_disponible");
         exit();
     }
@@ -71,15 +67,10 @@ try {
     header("Location: " . $basePath . "web/src/votacion/ver_votacion.php?error=db_error");
     exit();
 }
-
-
-// Mensaje de éxito si el voto fue registrado (viene de procesar_voto.php)
 $mensaje_exito = isset($_GET['success_voto']) && $_GET['success_voto'] == 1 ? "¡Tu voto ha sido registrado exitosamente!" : '';
-// Mensaje de error si ya votó o hubo un problema
 $mensaje_error = isset($_GET['error_voto']) && $_GET['error_voto'] == 'ya_votaste' ? "Ya has votado en esta encuesta. ¡Gracias por tu participación!" : '';
 $mensaje_error_datos_invalidos = isset($_GET['error_voto']) && $_GET['error_voto'] == 'datos_invalidos' ? "Error: Los datos de la votación no son válidos." : '';
 $mensaje_error_no_recibidos = isset($_GET['error_voto']) && $_GET['error_voto'] == 'no_datos_recibidos' ? "Error: No se recibieron los datos de tu voto. Por favor, inténtalo de nuevo." : '';
-
 ?>
 
 <!DOCTYPE html>
@@ -112,7 +103,7 @@ $mensaje_error_no_recibidos = isset($_GET['error_voto']) && $_GET['error_voto'] 
                 <p class="mensaje-error"><?= $mensaje_error_no_recibidos ?></p>
             <?php endif; ?>
 
-            <?php if ($votacion_activa && $votacion_info): ?>
+            <?php if ($votacion_info): ?>
                 <h1><?= htmlspecialchars($votacion_info['titulo']) ?></h1>
                 <?php if (!empty($votacion_info['descripcion'])): ?>
                     <p class="descripcion"><?= htmlspecialchars($votacion_info['descripcion']) ?></p>
@@ -137,6 +128,13 @@ $mensaje_error_no_recibidos = isset($_GET['error_voto']) && $_GET['error_voto'] 
                     <a href="<?= $basePath ?>web/src/votacion/resultados_votacion.php?votacion_id=<?= htmlspecialchars($id_votacion) ?>" class="boton-resultados">
                         Ver Resultados
                     </a>
+                <?php elseif ($votacion_finalizada): ?>
+                    <p class="mensaje-error">Esta votación ha finalizado. Ya no se pueden emitir votos.</p>
+                    <a href="<?= $basePath ?>web/src/votacion/resultados_votacion.php?votacion_id=<?= htmlspecialchars($id_votacion) ?>" class="boton-resultados">
+                        Ver Resultados
+                    </a>
+                <?php elseif ($votacion_futura): ?>
+                    <p class="mensaje-error">La votación aún no ha comenzado. Vuelve más tarde para participar.</p>
                 <?php else: ?>
                     <form action="<?= $basePath ?>backend/src/votacion/procesar_voto.php" method="post">
                         <input type="hidden" name="id_votacion" value="<?= htmlspecialchars($id_votacion) ?>">

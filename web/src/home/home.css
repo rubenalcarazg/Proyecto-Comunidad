@@ -103,16 +103,16 @@ main {
     gap: 20px;
 }
 
-/* Tarjetas */
+/* Tarjetas de noticias y eventos mejoradas */
 .noticia,
 .evento {
-    display: grid;
-    grid-template-columns: 100px 1fr;
+    display: flex;
     background: #fff;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    align-items: center;
+    border-radius: 8px;
     gap: 20px;
+    align-items: flex-start;
 }
 
 /* Imágenes de tarjetas */
@@ -120,23 +120,54 @@ main {
 .evento img {
     width: 100px;
     height: 100px;
-    border-radius: 0;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
 }
 
-/* Textos de tarjetas */
+/* Contenedor de contenido textual */
+.noticia > div,
+.evento > div {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
+    gap: 8px;
+}
+
+/* Encabezado con título y fecha */
+.noticia-header,
+.evento-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+/* Título */
 .noticia h3,
 .evento h3 {
     color: #243D51;
     font-size: 18px;
     font-weight: 700;
-    margin-bottom: 5px;
+    margin: 0;
 }
 
-.noticia p,
-.evento p {
+/* Fecha */
+.noticia .fecha,
+.evento .fecha {
+    font-size: 14px;
+    color: #999;
+    white-space: nowrap;
+}
+
+/* Descripción */
+.noticia .descripcion,
+.evento .descripcion {
     color: #757575;
     font-size: 14px;
-    margin: 5px 0;
+    margin-top: auto;
+    margin-bottom: auto;
+    flex-grow: 1;
 }
 
 /* Botones */
@@ -148,8 +179,10 @@ main {
     border: none;
     padding: 12px 20px;
     cursor: pointer;
-    border-radius: 0;
+    border-radius: 4px;
     font-size: 14px;
+    align-self: flex-end;
+    margin-top: 10px;
 }
 
 .noticia button:hover,
@@ -261,6 +294,40 @@ main {
     font-size: 20px;
 }
 
+.destacado.votacion {
+    display: flex;
+    gap: 15px;
+    background-color: #fdfdfd;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    padding: 20px;
+}
+
+.destacado.votacion h3 {
+    margin-top: 0;
+    color: #243D51;
+    font-size: 18px;
+}
+
+.destacado.votacion p {
+    color: #757575;
+    margin-bottom: 10px;
+}
+
+.destacado.votacion button {
+    align-self: flex-start;
+    background-color: #243D51;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.destacado.votacion button:hover {
+    background-color: #1a2e3e;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
     main {
@@ -277,13 +344,31 @@ main {
 
     .noticia,
     .evento {
-        grid-template-columns: 1fr;
+        flex-direction: column;
+        align-items: center;
         text-align: center;
     }
 
     .noticia img,
     .evento img {
-        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+
+    .noticia > div,
+    .evento > div {
+        align-items: center;
+    }
+
+    .noticia-header,
+    .evento-header {
+        flex-direction: column;
+        align-items: center;
+        gap: 4px;
+    }
+
+    .noticia button,
+    .evento button {
+        align-self: center;
     }
 
     #calendario,

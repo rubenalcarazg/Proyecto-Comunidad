@@ -211,3 +211,4 @@ WHERE valor_destacado IS NULL;
 
 ALTER TABLE noticias ADD imagen VARCHAR(255) DEFAULT '/Proyecto-Comunidad/web/etc/assets/img/bloque.jpg';
 ALTER TABLE eventos ADD imagen VARCHAR(255) DEFAULT '/Proyecto-Comunidad/web/etc/assets/img/bloque.jpg';
+
