@@ -152,7 +152,20 @@ include __DIR__ . '/../../../backend/src/conexion_BBDD/conexion_db_pm.php';
             ";
             $stmt_noticia_destacada = $pdo->query($sql_noticia_destacada);
 
-            if ($stmt_evento_destacado->rowCount() > 0 || $stmt_noticia_destacada->rowCount() > 0) {
+            // NUEVO: votación más reciente
+            $sql_votacion_reciente = "
+                SELECT id_votacion, titulo, descripcion, fecha_inicio
+                FROM votacion
+                ORDER BY fecha_inicio DESC
+                LIMIT 1
+            ";
+            $stmt_votacion_reciente = $pdo->query($sql_votacion_reciente);
+
+            if (
+                $stmt_evento_destacado->rowCount() > 0 ||
+                $stmt_noticia_destacada->rowCount() > 0 ||
+                $stmt_votacion_reciente->rowCount() > 0
+            ) {
             ?>
                 <section id="bloqueDestacado">
                     <h2>Bloque de noticia y evento destacados:</h2>
@@ -188,6 +201,23 @@ include __DIR__ . '/../../../backend/src/conexion_BBDD/conexion_db_pm.php';
                                 <p><?php echo htmlspecialchars($evento_destacado['descripcion']); ?></p>
                                 <p><strong>Fecha:</strong> <?php echo $fecha_formateada; ?></p>
                                 <a href="../eventos/detalle.php?id=<?php echo $evento_destacado['id_evento']; ?>">
+                                    <button>Ver Detalles</button>
+                                </a>
+                            </div>
+                        </div>
+                    <?php } ?>
+
+                    <?php
+                    if ($stmt_votacion_reciente->rowCount() > 0) {
+                        $votacion = $stmt_votacion_reciente->fetch(PDO::FETCH_ASSOC);
+                        $fecha_formateada = date("d/m/Y", strtotime($votacion['fecha_inicio']));
+                    ?>
+                        <div class="destacado votacion">
+                            <div>
+                                <h3><?php echo htmlspecialchars($votacion['titulo']); ?></h3>
+                                <p><?php echo htmlspecialchars(mb_strimwidth($votacion['descripcion'], 0, 100, "...")); ?></p>
+                                <p><strong>Fecha de inicio:</strong> <?php echo $fecha_formateada; ?></p>
+                                <a href="../votacion/votar.php?votacion_id=<?php echo $votacion['id_votacion']; ?>">
                                     <button>Ver Detalles</button>
                                 </a>
                             </div>

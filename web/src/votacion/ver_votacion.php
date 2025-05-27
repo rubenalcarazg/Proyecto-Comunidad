@@ -1,17 +1,13 @@
 <?php
-
 session_start();
 
 $basePath = '/Proyecto-Comunidad/'; 
 
-// Incluye el archivo de conexión a la base de datos
 require_once __DIR__ . '/../../../backend/src/conexion_BBDD/conexion_db_pm.php'; 
 
-// --- LÓGICA PARA VERIFICAR SI EL USUARIO ESTÁ LOGUEADO Y ES ADMINISTRADOR ---
 $es_administrador = false;
-$id_usuario_actual = null; // Para almacenar el ID del usuario logueado
+$id_usuario_actual = null;
 
-// Redirecciona si el usuario no ha iniciado sesión
 if (!isset($_SESSION['id_usuario'])) {
     header("Location: " . $basePath . "web/src/login/index.php");
     exit();
@@ -19,14 +15,9 @@ if (!isset($_SESSION['id_usuario'])) {
 
 $id_usuario_actual = $_SESSION['id_usuario'];
 
-// *** CAMBIO CLAVE AQUÍ: Usamos $_SESSION["nombre_rol"] ***
 if (isset($_SESSION['nombre_rol']) && $_SESSION['nombre_rol'] === 'Admin') {
     $es_administrador = true;
-} else {
-   
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -34,7 +25,7 @@ if (isset($_SESSION['nombre_rol']) && $_SESSION['nombre_rol'] === 'Admin') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Votaciones Activas</title>
+    <title>Votaciones</title>
     <link rel="stylesheet" href="<?= $basePath ?>web/src/home/home.css">
     <link rel="stylesheet" href="<?= $basePath ?>web/src/foro/foro.css">
     <link rel="stylesheet" href="<?= $basePath ?>web/src/votacion/ver_votacion.css"> 
@@ -47,10 +38,9 @@ if (isset($_SESSION['nombre_rol']) && $_SESSION['nombre_rol'] === 'Admin') {
     </header>
 
     <main id="votaciones-content">
-        <h2>Votaciones Activas</h2>
+        <h2>Votaciones</h2>
 
         <?php
-        // Mensajes de feedback
         if (isset($_GET['success']) && $_GET['success'] == 1) {
             echo '<div class="mensaje-exito">¡Votación creada exitosamente!</div>';
         } elseif (isset($_GET['success']) && $_GET['success'] == 'votacion_eliminada') {
@@ -69,67 +59,87 @@ if (isset($_SESSION['nombre_rol']) && $_SESSION['nombre_rol'] === 'Admin') {
         <div id="votaciones-list">
             <?php
             try {
-                
+                date_default_timezone_set('Europe/Madrid');
                 $now = date('Y-m-d H:i:s');
 
-                // Consulta para obtener las votaciones activas
-                $stmt_votaciones = $pdo->prepare("SELECT id_votacion, titulo, descripcion, fecha_inicio, fecha_fin FROM votacion WHERE fecha_inicio <= :now AND fecha_fin >= :now ORDER BY fecha_inicio DESC");
-                $stmt_votaciones->bindParam(':now', $now);
-                $stmt_votaciones->execute();
+                // Clasificación por estado
+                $stmt_votaciones = $pdo->query("SELECT id_votacion, titulo, descripcion, fecha_inicio, fecha_fin FROM votacion ORDER BY fecha_inicio DESC");
                 $votaciones = $stmt_votaciones->fetchAll(PDO::FETCH_ASSOC);
 
-                if (count($votaciones) > 0) {
-                    foreach ($votaciones as $votacion) {
-                        echo '<div class="votacion-card">';
-                        echo '<h3>' . htmlspecialchars($votacion['titulo']) . '</h3>';
-                        if (!empty($votacion['descripcion'])) {
-                            echo '<p>' . htmlspecialchars($votacion['descripcion']) . '</p>';
-                        }
-                        echo '<p class="fechas">Inicia: ' . date('d/m/Y H:i', strtotime($votacion['fecha_inicio'])) . '</p>';
-                        echo '<p class="fechas">Finaliza: ' . date('d/m/Y H:i', strtotime($votacion['fecha_fin'])) . '</p>';
+                $votaciones_activas = [];
+                $votaciones_futuras = [];
+                $votaciones_finalizadas = [];
 
-                        // Obtener las opciones para esta votación
-                        $stmt_opciones = $pdo->prepare("SELECT id_opcion, texto_opcion FROM opciones_votacion WHERE votacion_id = :votacion_id");
-                        $stmt_opciones->bindParam(':votacion_id', $votacion['id_votacion'], PDO::PARAM_INT);
-                        $stmt_opciones->execute();
-                        $opciones = $stmt_opciones->fetchAll(PDO::FETCH_ASSOC);
+                $ahora = strtotime($now);
 
-                        if (count($opciones) > 0) {
-                            echo '<ul class="opciones-list">';
-                            foreach ($opciones as $opcion) {
-                                echo '<li>' . htmlspecialchars($opcion['texto_opcion']) . '</li>';
+                foreach ($votaciones as $votacion) {
+                    $inicio = strtotime($votacion['fecha_inicio']);
+                    $fin = strtotime($votacion['fecha_fin']);
+
+                    if ($ahora >= $inicio && $ahora <= $fin) {
+                        $votaciones_activas[] = $votacion;
+                    } elseif ($ahora < $inicio) {
+                        $votaciones_futuras[] = $votacion;
+                    } elseif ($ahora > $fin) {
+                        $votaciones_finalizadas[] = $votacion;
+                    }
+                }
+
+                function mostrarVotaciones($titulo, $lista, $es_administrador, $basePath, $pdo) {
+                    echo "<h3>$titulo</h3>";
+                    if (count($lista) > 0) {
+                        foreach ($lista as $votacion) {
+                            echo '<div class="votacion-card">';
+                            echo '<h3>' . htmlspecialchars($votacion['titulo']) . '</h3>';
+                            if (!empty($votacion['descripcion'])) {
+                                echo '<p>' . htmlspecialchars($votacion['descripcion']) . '</p>';
                             }
-                            echo '</ul>';
-                        } else {
-                            echo '<p>No hay opciones para esta votación.</p>';
-                        }
+                            echo '<p class="fechas">Inicia: ' . date('d/m/Y H:i', strtotime($votacion['fecha_inicio'])) . '</p>';
+                            echo '<p class="fechas">Finaliza: ' . date('d/m/Y H:i', strtotime($votacion['fecha_fin'])) . '</p>';
 
-                        // --- NUEVA DISPOSICIÓN DE BOTONES ---
-                        echo '<div class="votacion-footer">'; // Contenedor Flex para los botones
+                            // Opciones
+                            $stmt_opciones = $pdo->prepare("SELECT texto_opcion FROM opciones_votacion WHERE votacion_id = :votacion_id");
+                            $stmt_opciones->bindParam(':votacion_id', $votacion['id_votacion'], PDO::PARAM_INT);
+                            $stmt_opciones->execute();
+                            $opciones = $stmt_opciones->fetchAll(PDO::FETCH_ASSOC);
 
-                            
+                            if (count($opciones) > 0) {
+                                echo '<ul class="opciones-list">';
+                                foreach ($opciones as $opcion) {
+                                    echo '<li>' . htmlspecialchars($opcion['texto_opcion']) . '</li>';
+                                }
+                                echo '</ul>';
+                            } else {
+                                echo '<p>No hay opciones para esta votación.</p>';
+                            }
+
+                            // Botones
+                            echo '<div class="votacion-footer">';
+
                             echo '<div class="votacion-left-button">';
-                                
-                                echo '<a href="' . $basePath . 'web/src/votacion/votar.php?votacion_id=' . htmlspecialchars($votacion['id_votacion']) . '" class="btn-votar">Votar</a>';
-                            echo '</div>'; // Cierra votacion-left-button
+                            echo '<a href="' . $basePath . 'web/src/votacion/votar.php?votacion_id=' . htmlspecialchars($votacion['id_votacion']) . '" class="btn-votar">Ver</a>';
+                            echo '</div>';
 
-                            // Botón de Eliminar (solo para administradores)
                             if ($es_administrador) {
                                 echo '<div class="votacion-right-button">';
-                                    echo '<form action="' . $basePath . 'backend/src/votacion/procesar_eliminacion_votacion.php" method="post" onsubmit="return confirm(\'¿Estás seguro de que quieres eliminar esta votación? Esto eliminará también todos los votos y opciones asociados.\');">';
-                                    echo '<input type="hidden" name="id_votacion_a_eliminar" value="' . htmlspecialchars($votacion['id_votacion']) . '">';
-                                    echo '<button type="submit" class="btn-eliminar">Eliminar</button>';
-                                    echo '</form>';
-                                echo '</div>'; 
+                                echo '<form action="' . $basePath . 'backend/src/votacion/procesar_eliminacion_votacion.php" method="post" onsubmit="return confirm(\'¿Estás seguro de que quieres eliminar esta votación? Esto eliminará también todos los votos y opciones asociados.\');">';
+                                echo '<input type="hidden" name="id_votacion_a_eliminar" value="' . htmlspecialchars($votacion['id_votacion']) . '">';
+                                echo '<button type="submit" class="btn-eliminar">Eliminar</button>';
+                                echo '</form>';
+                                echo '</div>';
                             }
-                        echo '</div>'; 
-                       
-                        
-                        echo '</div>'; // Cierre de votacion-card
+
+                            echo '</div>'; // votacion-footer
+                            echo '</div>'; // votacion-card
+                        }
+                    } else {
+                        echo '<p>No hay votaciones en esta categoría.</p>';
                     }
-                } else {
-                    echo '<p>No hay votaciones activas en este momento.</p>';
                 }
+
+                mostrarVotaciones("Votaciones Activas", $votaciones_activas, $es_administrador, $basePath, $pdo);
+                mostrarVotaciones("Votaciones Futuras", $votaciones_futuras, $es_administrador, $basePath, $pdo);
+                mostrarVotaciones("Votaciones Finalizadas", $votaciones_finalizadas, $es_administrador, $basePath, $pdo);
 
             } catch (PDOException $e) {
                 echo '<p class="mensaje-error">Error al cargar las votaciones: ' . htmlspecialchars($e->getMessage()) . '</p>';
