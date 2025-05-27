@@ -18,7 +18,7 @@ $sql = "SELECT * FROM noticias WHERE id_noticias = $id_noticia";
 $result = $pdo->query($sql);
 
 if ($result->rowCount() === 0) {
-    echo "<p>Noticia no encontrado.</p>";
+    echo "<p>Noticia no encontrada.</p>";
     exit;
 }
 
@@ -33,8 +33,6 @@ $noticia = $result->fetch();
     <link rel="stylesheet" href="crear_noticia.css?<?= time(); ?>" />
 </head>
 <body class="fondo-cuerpo">
-   
-
     <div class="contenedor-principal">
         <h2 class="titulo-noticia">Editar Noticia</h2>
         <form class="formulario-noticia" method="POST" action="../../../backend/src/noticias/procesar_edicion_noticia.php">
@@ -55,7 +53,10 @@ $noticia = $result->fetch();
                 <label><input type="radio" name="es_destacada" value="0" <?= $noticia['es_destacada'] == 0 ? 'checked' : ''; ?>> No</label>
             </div>
 
-            <button type="submit">Guardar Cambios</button>
+            <div class="botones-formulario">
+                <button type="submit" class="boton-noticia">Guardar Cambios</button>
+                <a href="/../Proyecto-Comunidad/web/src/noticias/index.php" class="boton-noticia boton-secundario">Volver a noticias</a>
+            </div>
         </form>
     </div>
 
