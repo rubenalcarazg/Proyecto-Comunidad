@@ -203,8 +203,8 @@ button[disabled] {
 }
 
 .mensaje-ya-voto {
-    background-color: #fff3cd; /* Amarillo claro */
-    color: #856404; /* Texto amarillo oscuro */
+    background-color: #243d51; /* Amarillo claro */
+    color: #ffffff; /* Texto amarillo oscuro */
     border: 1px solid #ffeeba;
 }
 

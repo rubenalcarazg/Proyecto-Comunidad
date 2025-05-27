@@ -83,7 +83,7 @@
 }
 
 .opcion-input button.eliminar-opcion {
-    background-color: #d9534f;
+    background-color: #243D51;
     color: white;
     border: none;
     padding: 8px 12px;
@@ -93,7 +93,7 @@
 }
 
 .opcion-input button.eliminar-opcion:hover {
-    background-color: #c9302c;
+    background-color: #1a2e3e;
 }
 
 #añadir-opcion,

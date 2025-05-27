@@ -1,13 +1,19 @@
-/* Styles for votaciones.php */
+h2, h3 {
+    color: #243d51;
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
 
-#votaciones-list {
+.votacion-cards-container {
     display: grid;
-    /* Ajusta las columnas para que sean responsivas. Mínimo 300px, máximo 1fr (distribución equitativa) */
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 20px; /* Espacio entre las tarjetas de votación */
+    gap: 20px;
     padding: 20px;
-    max-width: 1200px; /* Ancho máximo del contenedor de votaciones */
-    margin: 20px auto; /* Centrar el contenedor */
+    max-width: 1200px;
+    margin: 0 auto 40px auto;
+    /* Añadimos esto para centrar los elementos si no ocupan todo el ancho */
+    justify-content: center;
 }
 
 .votacion-card {
@@ -16,16 +22,20 @@
     border-radius: 8px;
     padding: 20px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    display: flex; /* Para organizar el contenido internamente */
-    flex-direction: column; /* Apila elementos verticalmente */
-    /* Removimos 'justify-content: space-between;' de aquí para moverlo al footer */
+    display: flex;
+    flex-direction: column;
+    /* Añadimos un ancho máximo y lo centramos si es el único elemento */
+    max-width: 400px; /* Puedes ajustar este valor para hacerla más pequeña o grande */
+    width: 100%; /* Asegura que ocupe el 100% de su espacio disponible, pero no más de max-width */
+    margin: 0 auto; /* Centra la tarjeta horizontalmente si el grid le da espacio extra */
 }
 
 .votacion-card h3 {
     margin-top: 0;
-    color: #333;
+    color: #243d51;
     font-size: 1.5em;
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .votacion-card p {
@@ -42,7 +52,7 @@
 }
 
 .votacion-card .opciones-list {
-    list-style: none; /* Elimina los puntos de la lista */
+    list-style: none;
     padding: 0;
     margin-top: 15px;
 }
@@ -56,73 +66,63 @@
     color: #444;
 }
 
-/* El estilo de .votar-btn anterior ha sido movido y ajustado para el nuevo diseño */
-/* El antiguo .votacion-card .votar-btn ya no se usa directamente para posicionamiento */
-
-
-.success-message {
-    background-color: #d4edda;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+.mensaje-exito, .mensaje-error {
     padding: 10px;
-    margin: 20px auto; /* Centrar el mensaje */
+    margin: 20px auto;
     border-radius: 5px;
     text-align: center;
-    max-width: 600px; /* Ancho máximo para que no se vea muy largo */
+    max-width: 600px;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-/* Estilos para cuando no hay votaciones */
-#votaciones-content p {
+.mensaje-exito {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.mensaje-error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+#votaciones-content > p {
     text-align: center;
     color: #555;
     font-size: 1.1em;
     margin-top: 50px;
 }
 
-/* --- ESTILOS PARA LA NUEVA DISPOSICIÓN DE BOTONES --- */
-
-/* Contenedor del pie de la tarjeta, usa flexbox para espaciar los botones */
 .votacion-footer {
     display: flex;
-    justify-content: space-between; /* Empuja los elementos a los extremos */
-    align-items: center; /* Centra verticalmente los botones */
-    padding-top: 15px; /* Espacio superior para separar del contenido */
-    margin-top: auto; /* Empuja el footer hacia la parte inferior de la tarjeta */
-    border-top: 1px solid #eee; /* Línea separadora opcional */
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    margin-top: auto;
+    border-top: 1px solid #eee;
 }
 
-/* Estilos generales para los botones */
 .btn-votar, .btn-eliminar {
-    padding: 10px 18px; /* Ajustado para que se vean bien */
+    padding: 10px 18px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     font-weight: bold;
-    text-decoration: none; /* Asegura que el enlace no tenga subrayado */
-    display: inline-block; /* Para que el padding y el tamaño funcionen bien */
+    text-decoration: none;
+    display: inline-block;
     text-align: center;
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-.btn-votar {
-    background-color: #243d51; /* Azul, como en tu estilo original de .votar-btn */
-    color: white;
-}
-
-.btn-votar:hover {
+.btn-votar, .btn-eliminar {
     background-color: #243d51;
-}
-
-.btn-eliminar {
-    background-color: #dc3545; /* Rojo */
     color: white;
 }
 
-.btn-eliminar:hover {
-    background-color: #c82333;
+.btn-votar:hover, .btn-eliminar:hover {
+    background-color: #1a2b38;
 }
-
 
 .votacion-footer form {
     margin: 0;
