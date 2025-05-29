@@ -78,7 +78,7 @@ function obtenerRutaImagen($ruta_en_bd, $ruta_base = '../etc/img/') {
                                 <img src="<?php echo htmlspecialchars($imagen); ?>" alt="Imagen de la noticia">
                                 <div>
                                     <h3><?php echo htmlspecialchars($noticia['titulo']); ?></h3>
-                                    <p><?php echo htmlspecialchars(mb_strimwidth($noticia['contenido'], 0, 100, "...")); ?></p>
+                                    <p><?php echo nl2br(htmlspecialchars($noticia['contenido'])); ?></p>
                                     <p><strong>Fecha:</strong> <?php echo $fecha_formateada; ?></p>
                                     <a href="../noticias/detalle.php?id=<?php echo $noticia['id_noticias']; ?>">
                                         <button>Ver más</button>
@@ -251,5 +251,4 @@ function obtenerRutaImagen($ruta_en_bd, $ruta_base = '../etc/img/') {
         <iframe src="../footer/FOOTER.html" frameborder="0" width="100%" height="300px"></iframe>
     </footer>
 </body>
-
 </html>
